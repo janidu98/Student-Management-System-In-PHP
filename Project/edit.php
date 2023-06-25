@@ -8,6 +8,9 @@
     //create connection
     $connection = new mysqli($servername, $username, $password, $database);
 
+    //drop down selection for department
+    
+
     $id = "";
     $name = "";
     $email = "";
@@ -27,20 +30,39 @@
         $id = $_GET["id"];
 
         //read a selected student from database
-        $sql = "SELECT * FROM students WHERE id=$id";
-        $result = $connection->query($sql);
-        $row = $result->fetch_assoc();
+        // $sql = "SELECT * FROM students WHERE id=$id";
+        // $result = $connection->query($sql);
+        // $row = $result->fetch_assoc();
+        // $selectedDepartmentId = $row['depId'];
 
-        if(!$row) {
-            header("location: /2018COM52/index.php");
+        // $query = "SELECT * FROM departments";
+        // $res = mysqli_query($connection, $query);
+        // $options = "";
+        // while($row1 = mysqli_fetch_array($res)) {
+        //     $options = $options."<option selected=($selectedDepartmentId == $row1[0]) ? 'selected' : ''>$row1[1]</option>";
+        // }
+
+        
+        $departmentsQuery = "SELECT * FROM departments";
+        $departmentsResult = mysqli_query($connection, $departmentsQuery);
+        $departments = mysqli_fetch_all($departmentsResult, MYSQLI_ASSOC);
+
+        $studentQuery = "SELECT * FROM students WHERE id = $id";
+        $studentResult = mysqli_query($connection, $studentQuery);
+        $student = mysqli_fetch_assoc($studentResult);
+        $selectedDepartmentID = $student['depId'];
+
+
+        if(!$student) {
+            header("location: /2018COM52/Project/index.php");
             exit;
         }
 
-        $name = $row["name"];
-        $email = $row["email"];
-        $department = $row["department"];
-        $phone = $row["phone"];
-        $address = $row["address"];
+        $name = $student["name"];
+        $email = $student["email"];
+        $department = $student["depId"];
+        $phone = $student["phone"];
+        $address = $student["address"];
 
     } else {
         $id = $_POST["id"];
@@ -56,7 +78,7 @@
                 break;
             }
 
-            $sql = "UPDATE students SET name = '$name', email = '$email', department = '$department', phone = '$phone', address = '$address' WHERE id=$id";
+            $sql = "UPDATE students SET name = '$name', email = '$email', phone = '$phone', address = '$address', depId = '$department' WHERE id=$id";
 
             $result = $connection->query($sql);
 
@@ -67,7 +89,7 @@
 
             $successMessage = "Student is updated successfully";
 
-            header("location: /2018COM52/index.php");
+            header("location: /2018COM52/Project/index.php");
             exit;
         }while(false);
 
@@ -126,7 +148,15 @@
                 <div class="row mb-3">
                     <label class="col-sm-3 col-form-label">Department</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" name="department" value="<?php echo $department; ?>" />
+                        <!-- <input type="text" class="form-control" name="department" value="/> -->
+                        <select name="department">
+                            <!-- <?php echo $options; ?> -->
+                            <?php foreach ($departments as $department): ?>
+                            <option value="<?php echo $department['depId']; ?>" <?php echo           ($selectedDepartmentID == $department['depId']) ? 'selected' : ''; ?>>
+                            <?php echo $department['depName']; ?>
+                            </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -162,7 +192,7 @@
                         <button type="submit" class="btn btn-primary">Save</button>
                     </div>
                     <div class="col-sm-3 d-grid">
-                        <a href="/2018COM52/index.php" class="btn btn-outline-primary" role="button">Cancel</a>
+                        <a href="/2018COM52/Project/index.php" class="btn btn-outline-primary" role="button">Cancel</a>
                     </div>
                 </div>
 

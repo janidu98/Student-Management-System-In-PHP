@@ -14,7 +14,7 @@
         <div class="container my-5">
             <h1 class="text-center mb-5 fw-bold pt-3 pb-3"  style="border: dotted">Student Management System</h1>
             <h2>List of Students</h2>
-            <a class="btn btn-primary mb-3 mt-3" href="/2018COM52/create.php">New Student</a>
+            <a class="btn btn-primary mb-3 mt-3" href="/2018COM52/Project/create.php">New Student</a>
             <br>
 
             <table class="table">
@@ -22,8 +22,8 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Email</th>
                         <th>Department</th>
+                        <th>Email</th>
                         <th>Phone</th>
                         <th>Address</th>
                         <th>Created Time</th>
@@ -46,7 +46,7 @@
                         }
 
                         //read all row from database table
-                        $sql = "SELECT * FROM students";
+                        $sql = "SELECT students.id,students.name,departments.depName,students.email,students.phone,students.address,students.created_at FROM students JOIN departments ON students.depId = departments.depId;";
                         $result = $connection->query($sql);
 
                         //check result has error or not
@@ -60,14 +60,14 @@
                                 <tr>
                                     <td>$row[id]</td>
                                     <td>$row[name]</td>
+                                    <td>$row[depName]</td>
                                     <td>$row[email]</td>
-                                    <td>$row[department]</td>
                                     <td>$row[phone]</td>
                                     <td>$row[address]</td>
                                     <td>$row[created_at]</td>
                                     <td>
-                                        <a class='btn btn-primary btn-sm' href='/2018COM52/edit.php?id=$row[id]'>Edit</a>
-                                        <a class='btn btn-danger btn-sm' href='/2018COM52/delete.php?id=$row[id]'>Delete</a>
+                                        <a class='btn btn-primary btn-sm' href='/2018COM52/Project/edit.php?id=$row[id]'>Edit</a>
+                                        <a class='btn btn-danger btn-sm' href='/2018COM52/Project/delete.php?id=$row[id]'>Delete</a>
                                     </td>
                                 </tr>
                             ";

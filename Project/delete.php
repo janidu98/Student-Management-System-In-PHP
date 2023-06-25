@@ -14,6 +14,6 @@
         $connection->query($sql);
     }
 
-    header("location: /2018COM52/index.php");
+    header("location: /2018COM52/Project/index.php");
     exit;
 ?>

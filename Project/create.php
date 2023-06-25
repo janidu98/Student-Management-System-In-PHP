@@ -8,6 +8,20 @@
     //create connection
     $connection = new mysqli($servername, $username, $password, $database);
 
+    //drop down selection for department
+    // $query = "SELECT * FROM departments";
+    // $res = mysqli_query($connection, $query);
+    // $options = "";
+    // while($row = mysqli_fetch_array($res)) {
+    //     $options = $options."<option>$row[1]</option>";
+    // }
+
+
+    $departmentsQuery = "SELECT * FROM departments";
+    $departmentsResult = $connection->query($departmentsQuery);
+    $departments = $departmentsResult->fetch_all(MYSQLI_ASSOC);
+
+
     $name = "";
     $email = "";
     $department = "";
@@ -31,7 +45,7 @@
             }
 
             //insert new students to database
-            $sql = "INSERT INTO students (name, email, department, phone, address) VALUES ('$name', '$email', '$department', '$phone', '$address')";
+            $sql = "INSERT INTO students (name, email, phone, address, depId) VALUES ('$name', '$email', '$phone', '$address', '$department')";
 
             $result = $connection->query($sql);
 
@@ -48,7 +62,7 @@
 
             $successMessage = "Student is added successfully";
 
-            header('location: /2018COM52/index.php');
+            header('location: /2018COM52/Project/index.php');
             exit;
 
         } while(false);
@@ -105,7 +119,14 @@
                 <div class="row mb-3">
                     <label class="col-sm-3 col-form-label">Department</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" name="department" value="<?php echo $department; ?>" />
+                        <!-- <input type="text" class="form-control" name="department" value="/> -->
+                        <select name="department">
+                            <?php foreach ($departments as $department): ?>
+                                <option value="<?php echo $department['depId']; ?>">
+                                     <?php echo $department['depName']; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -141,7 +162,7 @@
                         <button type="submit" class="btn btn-primary">Save</button>
                     </div>
                     <div class="col-sm-3 d-grid">
-                        <a href="/2018COM52/index.php" class="btn btn-outline-primary" role="button">Cancel</a>
+                        <a href="/2018COM52/Project/index.php" class="btn btn-outline-primary" role="button">Cancel</a>
                     </div>
                 </div>
 
