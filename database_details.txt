@@ -1,0 +1,59 @@
+2018COM52 - Assignment_04
+
+--------------------- create database ---------------------
+CREATE DATABASE student_manager;
+
+
+--------------------- create student table ---------------------
+CREATE TABLE students(
+	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	name VARCHAR(100) NOT NULL,
+	email VARCHAR(100) NOT NULL UNIQUE,
+	phone VARCHAR(10) NOT NULL,
+	address VARCHAR(200) NOT NULL,
+	created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	depId INT NOT NULL, 
+	FOREIGN KEY(depId) REFERENCES departments(depId)
+);
+
+
+--------------------- insert values into student table ---------------------
+INSERT INTO students (name, email, phone, address, depId) VALUES 
+('Janidu Chathushan', 'janidu@gmail.com', '0717777624', 'Kandy Road, Yakkala', 1),
+('Dasun Perera', 'dasun22@gmail.com', '0773298136', '123/A, Gampaha', 2),
+('Kasuni Tharika', 'kasunit@gmail.com', '0759812764', '2/B, Kanthale', 3),
+('Nirmali Hansika', 'nima21@gmail.com', '0724125462', 'Lake road, Kurunegala', 4),
+
+
+--------------------- create department table ---------------------
+CREATE TABLE departments(
+	depId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	depName VARCHAR(100) NOT NULL
+);
+
+
+--------------------- insert values into department table ---------------------
+INSERT INTO departments VALUES
+(1, "DCS"),
+(2, "DPS"),
+(3, "USM"),
+(4, "LCS"),
+(5, "BMS");
+
+
+--------------------- create deleteStudents table for storing delete students ---------------------
+CREATE TABLE deleteStudents(
+	id INT NOT NULL PRIMARY KEY,
+	name VARCHAR(100) NOT NULL,
+	email VARCHAR(100) NOT NULL UNIQUE,
+	phone VARCHAR(10) NOT NULL,
+	address VARCHAR(200) NOT NULL,
+	created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	depId INT NOT NULL, 
+	FOREIGN KEY(depId) REFERENCES departments(depId)
+);
+
+
+--------------------- create trigger / after deleting student store in another table ---------------------
+CREATE TRIGGER delStud AFTER DELETE ON students FOR EACH ROW
+   INSERT INTO deleteStudents VALUES(OLD.id, OLD.name, OLD.email, OLD.phone, OLD.address, OLD.created_at, OLD.depId);

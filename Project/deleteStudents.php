@@ -13,9 +13,8 @@
 
         <div class="container my-5">
             <h1 class="text-center mb-5 fw-bold pt-3 pb-3"  style="border: dotted">Student Management System</h1>
-            <h2>List of Students</h2>
-            <a class="btn btn-primary mb-3 mt-3" href="/2018COM52/Project/create.php">Add New Student</a>
-            <a class="btn btn-success mb-3 mt-3" href="/2018COM52/Project/deleteStudents.php">List of Deleted Students</a>
+            <h2>List of Deleted Students</h2>
+            <a class="btn btn-primary mb-3 mt-3" href="/2018COM52/Project/index.php">Back To Home</a>
             <br>
 
             <table class="table">
@@ -28,7 +27,6 @@
                         <th>Phone</th>
                         <th>Address</th>
                         <th>Created Time</th>
-                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,7 +45,7 @@
                         }
 
                         //read all row from database table
-                        $sql = "SELECT students.id,students.name,departments.depName,students.email,students.phone,students.address,students.created_at FROM students JOIN departments ON students.depId = departments.depId;";
+                        $sql = "SELECT deleteStudents.id,deleteStudents.name,departments.depName,deleteStudents.email,deleteStudents.phone,deleteStudents.address,deleteStudents.created_at FROM deleteStudents JOIN departments ON deleteStudents.depId = departments.depId;";
                         $result = $connection->query($sql);
 
                         //check result has error or not
@@ -66,10 +64,6 @@
                                     <td>$row[phone]</td>
                                     <td>$row[address]</td>
                                     <td>$row[created_at]</td>
-                                    <td>
-                                        <a class='btn btn-primary btn-sm' href='/2018COM52/Project/edit.php?id=$row[id]'>Edit</a>
-                                        <a class='btn btn-danger btn-sm' href='/2018COM52/Project/delete.php?id=$row[id]'>Delete</a>
-                                    </td>
                                 </tr>
                             ";
                         }
